@@ -2,8 +2,28 @@ const express = require('express');
 const { HttpError } = require('../lib/errors');
 const { summarizeTestResults } = require('../services/scoring');
 
+const RATE_LIMIT_WINDOW_MS = 60 * 1000;
+const RATE_LIMIT_MAX_REQUESTS = 30;
+const requestCounters = new Map();
+
 function toBoolean(value) {
   return value === true || value === 1;
+}
+
+function applyRateLimit(req) {
+  const now = Date.now();
+  const key = req.ip || req.socket?.remoteAddress || 'unknown';
+  const existing = requestCounters.get(key);
+
+  if (!existing || now - existing.windowStart >= RATE_LIMIT_WINDOW_MS) {
+    requestCounters.set(key, { windowStart: now, count: 1 });
+    return;
+  }
+
+  existing.count += 1;
+  if (existing.count > RATE_LIMIT_MAX_REQUESTS) {
+    throw new HttpError(429, '請稍後再試，提交過於頻繁');
+  }
 }
 
 function validateRequestBody(body) {
@@ -27,6 +47,7 @@ function createSubmissionsRouter({ pool, codeRunner, aiGrader }) {
 
   router.post('/api/questions/:questionId/submissions', async (req, res, next) => {
     try {
+      applyRateLimit(req);
       validateRequestBody(req.body);
 
       const questionId = Number(req.params.questionId);
