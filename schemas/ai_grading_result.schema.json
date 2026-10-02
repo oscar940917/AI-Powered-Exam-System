@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-powered-exam-system.local/schemas/ai_grading_result.schema.json",
+  "title": "AIGradingResult",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "score",
+    "test_cases_summary",
+    "code_quality",
+    "feedback",
+    "recommended_chapter"
+  ],
+  "properties": {
+    "score": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "test_cases_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["total", "passed", "details"],
+      "properties": {
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "passed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "details": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "code_quality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["completeness", "feasibility", "pros", "cons"],
+      "properties": {
+        "completeness": {
+          "type": "string",
+          "minLength": 1
+        },
+        "feasibility": {
+          "type": "string",
+          "minLength": 1
+        },
+        "pros": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "cons": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "feedback": {
+      "type": "string",
+      "minLength": 1
+    },
+    "recommended_chapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["chapter_id", "chapter_name", "ppt_link"],
+      "properties": {
+        "chapter_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "chapter_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ppt_link": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}
