@@ -1,0 +1,20 @@
+{
+  "score": 85,
+  "test_cases_summary": {
+    "total": 10,
+    "passed": 8,
+    "details": "公開測資全過，隱藏測資有 2 筆因邊界條件（如負數或空值）未通過。"
+  },
+  "code_quality": {
+    "completeness": "程式碼邏輯大致完整，但未處理例外狀況。",
+    "feasibility": "演算法時間複雜度為 O(n)，符合效能要求。",
+    "pros": ["變數命名清晰", "主函式結構簡潔"],
+    "cons": ["缺乏對極端輸入（Edge Cases）的防範", "部分迴圈可再優化"]
+  },
+  "feedback": "整體表現良好，但在處理邊界條件時需要多加注意。",
+  "recommended_chapter": {
+    "chapter_id": "ch_03",
+    "chapter_name": "第三章：條件判斷與迴圈邊界處理",
+    "ppt_link": "uploads/ppt/chapter3.pptx"
+  }
+}
